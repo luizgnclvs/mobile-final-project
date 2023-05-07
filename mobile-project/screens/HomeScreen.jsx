@@ -1,37 +1,43 @@
-import { FlatList, Button, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, Button, FlatList, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getAlbuns } from '../services/album.service';
 
 import AlbumPreview from '../components/AlbumPreview';
 
-const albumList = [
-	{
-		id: 1,
-		name: 'Rumours',
-		artist: 'Fleetwood Mac',
-		cover: require('../assets/albums/rumours.jpg'),
-	},
-	{
-		id: 2,
-		name: 'Thriller',
-		artist: 'Michael Jackson',
-		cover: require('../assets/albums/thriller.jpg'),
-	},
-	{
-		id: 3,
-		name: 'The Dark Side of the Moon',
-		artist: 'Pink Floyd',
-		cover: require('../assets/albums/dark_side_of_the_moon.jpg'),
-	},
-];
-
 export default function HomeScreen({ navigation }) {
+	const queryClient = useQueryClient();
+	const { isLoading, error, data, isFetching } = useQuery({
+		queryKey: ["albums"],
+		queryFn: getAlbuns,
+	});
+
+	if (isLoading) {
+		return (
+			<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+				<Text>Loading</Text>
+				<ActivityIndicator size="large" />
+			</View>
+		);
+	}
+
+	if (error) {
+		return (
+			<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+				<Text>Error: {error.message}</Text>
+			</View>
+		);
+	}
+
 	return (
 		<View style={styles.container}>
 			<Text variant='headlineMedium'>Albums</Text>
+			{isFetching && <Text>IS FETCHING</Text>}
 			<FlatList
-				data={albumList}
+				data={data.results}
 				renderItem={({item}) => <AlbumPreview album={item} navigation={navigation} />}
-				keyExtractor={item => item.id}
+				keyExtractor={item => item.obejctId}
 
 			/>
 			<Button title="About" onPress={() => navigation.navigate('About')} />
