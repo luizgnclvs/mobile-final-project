@@ -13,8 +13,8 @@ export default function App() {
 			<Stack.Navigator initialRouteName='Home'>
 				<Stack.Screen name='Home' component={HomeScreen} />
 				<Stack.Screen name='About' component={AboutScreen} />
-				<Stack.Screen name='AlbumDetailsScreen' component={AlbumDetailsScreen}/>
-				<Stack.Screen name='AlbumReviewScreen' component={AlbumReviewScreen}/>
+				<Stack.Screen name='AlbumDetailsScreen' component={AlbumDetailsScreen} />
+				<Stack.Screen name='AlbumReviewScreen' component={AlbumReviewScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
