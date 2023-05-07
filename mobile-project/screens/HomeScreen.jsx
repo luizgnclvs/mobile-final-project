@@ -1,5 +1,6 @@
 import { FlatList, Button, View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
+
 import AlbumPreview from '../components/AlbumPreview';
 
 const albumList = [
