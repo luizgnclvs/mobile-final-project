@@ -2,14 +2,10 @@ import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper'
 
 export default function AlbumPreview(props) {
-	const album = props.album;
-
-	function handleAlbumPress(album) {
-		Alert.alert(album.name);
-	}
+	const { album, navigation } = props;
 
 	return (
-		<TouchableOpacity key={album.id} style={styles.album} onPress={() => handleAlbumPress(album)}>
+		<TouchableOpacity key={album.id} style={styles.album} onPress={() => navigation.navigate('AlbumDetailsScreen', { album })}>
 			<Image source={album.cover} style={styles.albumCover} />
 			<View>
 				<Text variant='titleLarge'>{album.name}</Text>

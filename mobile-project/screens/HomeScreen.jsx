@@ -29,8 +29,9 @@ export default function HomeScreen({ navigation }) {
 			<Text variant='headlineMedium'>Albums</Text>
 			<FlatList
 				data={albumList}
-				renderItem={({item}) => <AlbumPreview album={item} />}
+				renderItem={({item}) => <AlbumPreview album={item} navigation={navigation} />}
 				keyExtractor={item => item.id}
+
 			/>
 			<Button title="About" onPress={() => navigation.navigate('About')} />
 		</View>
