@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const instance = axios.create({
+const axiosInstance = axios.create({
 	baseURL: "https://parseapi.back4app.com/classes/",
 	headers: {
 		"X-Parse-Application-Id": "BcmhNGw7L1ytCbQo2KBeKOHfPsq3Koq1K3HhsU3U",
@@ -8,4 +8,4 @@ const instance = axios.create({
 	},
 });
 
-export default instance;
+export default axiosInstance;
