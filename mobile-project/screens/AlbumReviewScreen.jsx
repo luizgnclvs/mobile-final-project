@@ -12,7 +12,7 @@ export default function AlbumReviewScreen({ route, navigation }) {
 	}
 
 	function handleRatingChange(value) {
-		setRating(value);
+		if (!isNaN(value)) setRating(Number(value));
 	}
 
 	function handleSubmit() {
@@ -35,7 +35,7 @@ export default function AlbumReviewScreen({ route, navigation }) {
 				placeholder="Avaliação (0-5)"
 				keyboardType="numeric"
 				onChangeText={handleRatingChange}
-				value={rating}
+				value={String(rating)}
 			/>
 			<Button title="Enviar" onPress={handleSubmit} />
 		</View>
