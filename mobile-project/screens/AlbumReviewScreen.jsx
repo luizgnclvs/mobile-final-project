@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import useStore from '../stores/rating.store';
 
 export default function AlbumReviewScreen({ route, navigation }) {
 	if (!route.params || !route.params.album) {
@@ -9,23 +10,25 @@ export default function AlbumReviewScreen({ route, navigation }) {
 			</View>
 		);
 	}
+
 	const { album } = route.params;
+  const addReview = useStore((state) => state.addReview);
 
-	const [comment, setComment] = React.useState('');
-	const [rating, setRating] = React.useState(0);
+  const [comment, setComment] = React.useState('');
+  const [rating, setRating] = React.useState('');
 
-	function handleCommentChange(value) {
-		setComment(value);
-	}
+  const handleCommentChange = (value) => {
+    setComment(value);
+  };
 
-	function handleRatingChange(value) {
+  const handleRatingChange = (value) => {
 		if (!isNaN(value)) setRating(Number(value));
 	}
 
-	function handleSubmit() {
-		// Aqui você pode enviar a avaliação do usuário para o servidor ou para o banco de dados local.
-		// Você pode usar bibliotecas como axios ou fetch para isso.
-	}
+  const handleSubmit = () => {
+    addReview(album.id, comment, rating);
+    navigation.goBack();
+  };
 
 	return (
 		<View style={styles.container}>
@@ -50,27 +53,27 @@ export default function AlbumReviewScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-	container: {
-		padding: 10,
-		backgroundColor: '#fff',
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	title: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		marginBottom: 10,
-	},
-	subtitle: {
-		fontSize: 18,
-		marginBottom: 20,
-	},
-	input: {
-		borderWidth: 1,
-		borderRadius: 5,
-		padding: 10,
-		marginBottom: 10,
-		width: '100%',
-	},
+  container: {
+    padding: 10,
+    backgroundColor: '#fff',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    width: '100%',
+  },
 });

@@ -2,7 +2,7 @@ import { ActivityIndicator, Button, FlatList, StyleSheet, View } from 'react-nat
 import { Text } from 'react-native-paper';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getAlbuns } from '../services/album.service';
+import { getAlbums } from '../services/album.service';
 
 import AlbumPreview from '../components/AlbumPreview';
 
@@ -10,7 +10,7 @@ export default function HomeScreen({ navigation }) {
 	const queryClient = useQueryClient();
 	const { isLoading, error, data, isFetching } = useQuery({
 		queryKey: ["albums"],
-		queryFn: getAlbuns,
+		queryFn: getAlbums,
 	});
 
 	if (isLoading) {
@@ -35,9 +35,9 @@ export default function HomeScreen({ navigation }) {
 			<Text variant='headlineMedium'>Albums</Text>
 			{isFetching && <Text>IS FETCHING</Text>}
 			<FlatList
-				data={data.results}
+				data={data}
 				renderItem={({item}) => <AlbumPreview album={item} navigation={navigation} />}
-				keyExtractor={item => item.obejctId}
+				keyExtractor={item => item.id}
 
 			/>
 			<Button title="About" onPress={() => navigation.navigate('About')} />
