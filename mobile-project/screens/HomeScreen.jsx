@@ -15,8 +15,10 @@ export default function HomeScreen({ navigation }) {
 		queryFn: getAlbums,
 		onSuccess: () => {
 			setAlbums(data);
-		},
+		}
 	});
+
+	queryClient.invalidateQueries({ queryKey: ["albums"] });
 
 	if (isLoading) {
 		return (
@@ -26,7 +28,6 @@ export default function HomeScreen({ navigation }) {
 			</View>
 		);
 	}
-
 
 	if (error) {
 		return (
@@ -39,14 +40,14 @@ export default function HomeScreen({ navigation }) {
 	return (
 		<View style={styles.container}>
 			<Text variant='headlineMedium'>Albums</Text>
-			{isFetching && <Text>IS FETCHING</Text>}
-			<FlatList
-				data={albums}
-				renderItem={({item}) => <AlbumPreview album={item} navigation={navigation} />}
-				keyExtractor={item => item.id}
-
-			/>
-			<Button title="About" onPress={() => navigation.navigate('About')} />
+			{/* {isFetching && <Text>IS FETCHING</Text>} */}
+			{albums &&
+				<FlatList
+					data={albums}
+					renderItem={({item}) => <AlbumPreview album={item} navigation={navigation} />}
+					keyExtractor={item => item.id}
+				/>
+			}
 		</View>
 	);
 }

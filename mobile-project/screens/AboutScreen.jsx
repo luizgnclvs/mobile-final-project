@@ -10,7 +10,6 @@ export default function AboutScreen({ navigation }) {
 				Você pode explorar nossa biblioteca de músicas e álbuns, ouvir amostras e adicionar suas favoritas à sua lista de reprodução.
 				Se você tiver alguma dúvida ou comentário, não hesite em entrar em contato conosco.
 			</Text>
-			<Button title="Home" onPress={() => navigation.navigate('Home')} />
 		</View>
 	);
 }
