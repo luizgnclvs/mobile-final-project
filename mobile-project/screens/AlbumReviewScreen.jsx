@@ -2,6 +2,13 @@ import * as React from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function AlbumReviewScreen({ route, navigation }) {
+	if (!route.params || !route.params.album) {
+		return (
+			<View style={styles.container}>
+				<Text>No album selected.</Text>
+			</View>
+		);
+	}
 	const { album } = route.params;
 
 	const [comment, setComment] = React.useState('');
@@ -12,7 +19,7 @@ export default function AlbumReviewScreen({ route, navigation }) {
 	}
 
 	function handleRatingChange(value) {
-		setRating(value);
+		if (!isNaN(value)) setRating(Number(value));
 	}
 
 	function handleSubmit() {
@@ -35,7 +42,7 @@ export default function AlbumReviewScreen({ route, navigation }) {
 				placeholder="Avaliação (0-5)"
 				keyboardType="numeric"
 				onChangeText={handleRatingChange}
-				value={rating}
+				value={String(rating)}
 			/>
 			<Button title="Enviar" onPress={handleSubmit} />
 		</View>
