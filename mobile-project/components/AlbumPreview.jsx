@@ -6,7 +6,7 @@ export default function AlbumPreview(props) {
 
 	return (
 		<TouchableOpacity key={album.id} style={styles.album} onPress={() => navigation.navigate('AlbumDetailsScreen', { album })}>
-			<Image source={{ uri: album.cover.url }} style={styles.albumCover} />
+			<Image source={{ uri: album.cover_url }} style={styles.albumCover} />
 			<View>
 				<Text variant='titleLarge'>{album.name}</Text>
 				<Text variant='titleMedium'>{album.artist}</Text>

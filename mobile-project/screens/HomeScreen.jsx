@@ -35,9 +35,9 @@ export default function HomeScreen({ navigation }) {
 			<Text variant='headlineMedium'>Albums</Text>
 			{isFetching && <Text>IS FETCHING</Text>}
 			<FlatList
-				data={data.results}
+				data={data}
 				renderItem={({item}) => <AlbumPreview album={item} navigation={navigation} />}
-				keyExtractor={item => item.objectId}
+				keyExtractor={item => item.id}
 
 			/>
 			<Button title="About" onPress={() => navigation.navigate('About')} />
