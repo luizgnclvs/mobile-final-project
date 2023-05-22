@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import useStore from '../store/store';
+import useStore from '../stores/rating.store';
 
 export default function AlbumReviewScreen({ route, navigation }) {
   const { album } = route.params;
