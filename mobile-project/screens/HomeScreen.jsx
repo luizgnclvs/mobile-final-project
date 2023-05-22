@@ -5,12 +5,17 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAlbums } from '../services/album.service';
 
 import AlbumPreview from '../components/AlbumPreview';
+import useAlbumStore from '../stores/album.store';
 
 export default function HomeScreen({ navigation }) {
+	const { albums, setAlbums } = useAlbumStore();
 	const queryClient = useQueryClient();
 	const { isLoading, error, data, isFetching } = useQuery({
 		queryKey: ["albums"],
 		queryFn: getAlbums,
+		onSuccess: () => {
+			setAlbums(data);
+		},
 	});
 
 	if (isLoading) {
@@ -21,6 +26,7 @@ export default function HomeScreen({ navigation }) {
 			</View>
 		);
 	}
+
 
 	if (error) {
 		return (
@@ -35,7 +41,7 @@ export default function HomeScreen({ navigation }) {
 			<Text variant='headlineMedium'>Albums</Text>
 			{isFetching && <Text>IS FETCHING</Text>}
 			<FlatList
-				data={data}
+				data={albums}
 				renderItem={({item}) => <AlbumPreview album={item} navigation={navigation} />}
 				keyExtractor={item => item.id}
 
