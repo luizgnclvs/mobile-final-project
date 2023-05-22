@@ -9,7 +9,7 @@ export default function AlbumDetailsScreen({ route, navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<Image source={{ uri: album.cover.url }} style={styles.albumCover} />
+			<Image source={{ uri: album.cover_url }} style={styles.albumCover} />
 			<Text style={styles.title}>{album.name}</Text>
 			<Text style={styles.subtitle}>{album.artist}</Text>
 			<Text style={styles.description}>
