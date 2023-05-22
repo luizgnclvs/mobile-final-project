@@ -3,7 +3,15 @@ import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import useStore from '../stores/rating.store';
 
 export default function AlbumReviewScreen({ route, navigation }) {
-  const { album } = route.params;
+	if (!route.params || !route.params.album) {
+		return (
+			<View style={styles.container}>
+				<Text>No album selected.</Text>
+			</View>
+		);
+	}
+
+	const { album } = route.params;
   const addReview = useStore((state) => state.addReview);
 
   const [comment, setComment] = React.useState('');
@@ -14,36 +22,34 @@ export default function AlbumReviewScreen({ route, navigation }) {
   };
 
   const handleRatingChange = (value) => {
-    if (!isNaN(value)) {
-      setRating(Number(value));
-    }
-  };
+		if (!isNaN(value)) setRating(Number(value));
+	}
 
   const handleSubmit = () => {
     addReview(album.id, comment, rating);
     navigation.goBack();
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{album.name}</Text>
-      <Text style={styles.subtitle}>{album.artist}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Comentário"
-        onChangeText={handleCommentChange}
-        value={comment}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Avaliação (0-5)"
-        keyboardType="numeric"
-        onChangeText={handleRatingChange}
-        value={String(rating)}
-      />
-      <Button title="Enviar" onPress={handleSubmit} />
-    </View>
-  );
+	return (
+		<View style={styles.container}>
+			<Text style={styles.title}>{album.name}</Text>
+			<Text style={styles.subtitle}>{album.artist}</Text>
+			<TextInput
+				style={styles.input}
+				placeholder="Comentário"
+				onChangeText={handleCommentChange}
+				value={comment}
+			/>
+			<TextInput
+				style={styles.input}
+				placeholder="Avaliação (0-5)"
+				keyboardType="numeric"
+				onChangeText={handleRatingChange}
+				value={String(rating)}
+			/>
+			<Button title="Enviar" onPress={handleSubmit} />
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
