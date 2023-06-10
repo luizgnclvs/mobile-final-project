@@ -1,5 +1,8 @@
-import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Text } from 'react-native-paper'
+import { StyleSheet } from 'react-native';
+import { Text } from 'react-native-paper';
+import { Image } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 
 export default function AlbumPreview(props) {
 	const { album, navigation } = props;

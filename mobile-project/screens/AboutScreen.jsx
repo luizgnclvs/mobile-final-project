@@ -1,5 +1,7 @@
-import { Button, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+
+import { StyleSheet } from 'react-native';
+import { Text } from 'react-native';
+import { View } from 'react-native';
 
 export default function AboutScreen({ navigation }) {
 	return (

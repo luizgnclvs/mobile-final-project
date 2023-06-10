@@ -9,6 +9,7 @@ import HomeScreen from './screens/HomeScreen';
 import AboutScreen from './screens/AboutScreen';
 import AlbumDetailsScreen from './screens/AlbumDetailsScreen';
 import AlbumReviewScreen from './screens/AlbumReviewScreen';
+import AlbumCreateScreen from './screens/AlbumCreateScreen';
 
 const Client = new QueryClient();
 const Tab = createBottomTabNavigator();
@@ -16,28 +17,21 @@ const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
 	return (
-		<Stack.Navigator initialRouteName='HomeScreen'>
+		<Stack.Navigator>
 			<Stack.Screen name='HomeScreen' component={HomeScreen} />
 			<Stack.Screen name='AlbumDetailsScreen' component={AlbumDetailsScreen} />
-		</Stack.Navigator>
-	);
-}
-
-const AboutStack = () => {
-	return (
-		<Stack.Navigator initialRouteName='AboutScreen'>
-			<Stack.Screen name='AboutScreen' component={AboutScreen} />
 			<Stack.Screen name='AlbumReviewScreen' component={AlbumReviewScreen} />
 		</Stack.Navigator>
 	);
 }
+
 
 export default function App() {
 	return (
 		<QueryClientProvider client={Client}>
 			<PaperProvider>
 				<NavigationContainer>
-					<Tab.Navigator initialRouteName='Home'>
+					<Tab.Navigator>
 						<Tab.Screen 
 							name='Home'
 							component={HomeStack}
@@ -49,10 +43,19 @@ export default function App() {
 						/>
 						<Tab.Screen 
 							name='About' 
-							component={AboutStack} 
+							component={AboutScreen} 
 							options={{
 								tabBarIcon: ({ color, size }) => (
 									<FontAwesome name="info-circle" color={color} size={size} />
+								),
+							}}
+						/>
+						<Tab.Screen
+							name='NewAlbum'
+							component={AlbumCreateScreen}
+							options={{
+								tabBarIcon: ({ color, size }) => (
+									<FontAwesome name="plus" color={color} size={size} />
 								),
 							}}
 						/>

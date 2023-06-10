@@ -1,6 +1,9 @@
-import { ActivityIndicator, Button, FlatList, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
 
+import { StyleSheet } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
+import { FlatList } from 'react-native';
+import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAlbums } from '../services/album.service';
 
@@ -39,7 +42,7 @@ export default function HomeScreen({ navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<Text variant='headlineMedium'>Albums</Text>
+			<Text variant='headlineSmall'>Albums</Text>
 			{/* {isFetching && <Text>IS FETCHING</Text>} */}
 			{albums &&
 				<FlatList

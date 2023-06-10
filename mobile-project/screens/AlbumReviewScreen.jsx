@@ -1,5 +1,12 @@
+
 import React from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Button } from 'react-native';
+import { Text } from 'react-native';
+import { TextInput } from 'react-native';
+import { View } from 'react-native';
+import StarRating from 'react-native-star-rating';
+
 import useStore from '../stores/rating.store';
 
 export default function AlbumReviewScreen({ route, navigation }) {
@@ -15,7 +22,7 @@ export default function AlbumReviewScreen({ route, navigation }) {
   const addReview = useStore((state) => state.addReview);
 
   const [comment, setComment] = React.useState('');
-  const [rating, setRating] = React.useState('');
+  const [rating, setRating] = React.useState(0);
 
   const handleCommentChange = (value) => {
     setComment(value);
@@ -34,19 +41,21 @@ export default function AlbumReviewScreen({ route, navigation }) {
 		<View style={styles.container}>
 			<Text style={styles.title}>{album.name}</Text>
 			<Text style={styles.subtitle}>{album.artist}</Text>
-			<TextInput
+			
+      <StarRating
+        disabled={false}
+        maxStars={5}
+        rating={rating}
+        selectedStar={(rating) => handleRatingChange(rating)}
+        starSize={30}
+      />
+      <TextInput
 				style={styles.input}
 				placeholder="Comentário"
 				onChangeText={handleCommentChange}
 				value={comment}
 			/>
-			<TextInput
-				style={styles.input}
-				placeholder="Avaliação (0-5)"
-				keyboardType="numeric"
-				onChangeText={handleRatingChange}
-				value={String(rating)}
-			/>
+			 
 			<Button title="Enviar" onPress={handleSubmit} />
 		</View>
 	);
@@ -72,8 +81,9 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
+    padding: 50,
+    marginTop: 30,
+    marginBottom: 50,
     width: '100%',
   },
 });
