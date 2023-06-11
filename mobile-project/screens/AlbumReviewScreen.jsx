@@ -5,20 +5,23 @@ import { Button } from 'react-native';
 import { Text } from 'react-native';
 import { TextInput } from 'react-native';
 import { View } from 'react-native';
+import { Image } from 'react-native';
 import StarRating from 'react-native-star-rating';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 import useStore from '../stores/rating.store';
 
 export default function AlbumReviewScreen({ route, navigation }) {
 	if (!route.params || !route.params.album) {
 		return (
-			<View style={styles.container}>
+			<KeyboardAwareScrollView contentContainerStyle={styles.container} behavior="height">
 				<Text>No album selected.</Text>
-			</View>
+			</KeyboardAwareScrollView>
 		);
 	}
 
-	const { album } = route.params;
+	const { album, coverUrl } = route.params;
   const addReview = useStore((state) => state.addReview);
 
   const [comment, setComment] = React.useState('');
@@ -34,14 +37,16 @@ export default function AlbumReviewScreen({ route, navigation }) {
 
   const handleSubmit = () => {
     addReview(album.id, comment, rating);
-    navigation.goBack();
+    navigation.navigate('ReviewListScreen', { album, rating, comment, coverUrl: album.cover_url });
   };
-
+  
+  
 	return (
-		<View style={styles.container}>
+		<KeyboardAwareScrollView contentContainerStyle={styles.container} behavior="height">
 			<Text style={styles.title}>{album.name}</Text>
 			<Text style={styles.subtitle}>{album.artist}</Text>
-			
+			<Image source={{ uri: coverUrl }} style={styles.albumCover} 
+      />
       <StarRating
         disabled={false}
         maxStars={5}
@@ -57,7 +62,7 @@ export default function AlbumReviewScreen({ route, navigation }) {
 			/>
 			 
 			<Button title="Enviar" onPress={handleSubmit} />
-		</View>
+		</KeyboardAwareScrollView>
 	);
 }
 
@@ -68,6 +73,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  albumCover: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+    borderRadius: 5,
   },
   title: {
     fontSize: 24,
