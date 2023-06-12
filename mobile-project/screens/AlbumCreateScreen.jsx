@@ -1,34 +1,61 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Button, TextInput, View } from 'react-native';
-import { Text } from 'react-native-paper';
-import { createAlbum } from '../services/album.service';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import useAlbumFormStore from '../stores/album-form.store';
+import * as ImagePicker from 'expo-image-picker';
+
+import CoverPreview from '../components/CoverPreview';
+
+import { createAlbum } from '../services/album.service';
+import { saveAlbumCover } from '../services/album-cover.service';
+import { albumArtistStore, albumCoverURLStore, albumNameStore, albumReleaseYearStore } from '../stores/album-form';
+import useAlbumCoverStore from '../stores/album-cover.store';
 
 export default function AlbumCreateScreen({ route, navigation }) {
 	const queryClient = useQueryClient();
+	const placeholderImage = require('../assets/placeholder.jpg');
 
-	const {
-		name,
-		artist,
-		coverURL,
-		releaseYear,
-		setName,
-		setArtist,
-		setCoverURL,
-		setReleaseYear,
-	} = useAlbumFormStore();
+	const { name, setName } = albumNameStore();
+	const { artist, setArtist } = albumArtistStore();
+	const { url, setURL } = albumCoverURLStore();
+	const { year, setYear} = albumReleaseYearStore();
+	const { image, setImage } = useAlbumCoverStore();
 
-	const submitNewALbum = () => {
-		const albumForm = {
-			name: name,
-			artist: artist,
-			cover_url: coverURL,
-			release_year: releaseYear,
-		};
+	const handleYearInput = (value) => { if (!isNaN(value)) setYear(value) };
 
-		createAlbum(albumForm);
+	const selectAlbumCover = async () => {
+		let result = await ImagePicker.launchImageLibraryAsync({
+			allowsEditing: true,
+			aspect: [1, 1],
+			quality: 1,
+			base64: true,
+		});
+
+		if (!result.canceled) setImage(result.assets[0]);
+		else if (!image) Alert.alert('Importante','É necessário selecionar uma imagem de capa para o álbum.');
+	};
+
+	const submitNewALbum = async () => {
+		if (!url) {
+			const cover = await saveAlbumCover(image);
+
+			if (cover) setURL(cover._url);
+			else Alert.alert('Erro', 'Falha ao salvar a capa do álbum.');
+		} else {
+			const body = {
+				name: name,
+				artist: artist,
+				cover_url: url,
+				release_year: year,
+			};
+
+			try {
+				const result = await createAlbum(body);
+				console.log(result)
+				Alert.alert('Sucesso', 'Novo álbum foi cadastrado com sucesso.');
+			} catch(error) {
+
+			}
+		}
 	};
 
 	const mutation = useMutation({
@@ -39,38 +66,52 @@ export default function AlbumCreateScreen({ route, navigation }) {
 	});
 
 	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>Cadastro de Álbum</Text>
+		<ScrollView contentContainerStyle={styles.container}>
+			<CoverPreview
+				placeholderImageSource={placeholderImage}
+				selectedImage={image}
+			/>
+			<Button
+				mode='contained'
+				icon='camera'
+				onPress={selectAlbumCover}
+				style={styles.button}
+			>
+				Selecionar Foto
+			</Button>
 			<TextInput
 				label="Nome do Álbum"
+				mode="outlined"
 				value={name}
-				onChangeText={value => setName(value)}
+				onChangeText={setName}
 				style={styles.input}
 				placeholder="Nome do Álbum"
 			/>
 			<TextInput
 				label="Artista"
+				mode="outlined"
 				value={artist}
-				onChangeText={value => setArtist(value)}
+				onChangeText={setArtist}
 				style={styles.input}
 				placeholder="Artista"
 			/>
 			<TextInput
-				label="URL da Capa"
-				value={coverURL}
-				onChangeText={value => setCoverURL(value)}
-				style={styles.input}
-				placeholder="URL da Capa"
-			/>
-			<TextInput
 				label="Ano de Lançamento"
-				value={releaseYear}
-				onChangeText={value => setReleaseYear(value)}
+				mode="outlined"
+				value={String(year)}
+				onChangeText={handleYearInput}
 				style={styles.input}
 				placeholder="Ano de Lançamento"
+				maxLength={4}
 			/>
-			<Button title="Criar Álbum" onPress={mutation.mutate} />
-		</View>
+			<Button
+				mode='contained'
+				icon='plus'
+				onPress={mutation.mutate}
+			>
+				Criar Álbum
+			</Button>
+		</ScrollView>
 	);
 }
 
@@ -80,18 +121,12 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	title: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		marginBottom: 20,
 	},
 	input: {
-		width: '100%',
+		width: '90%',
 		marginBottom: 10,
-		borderWidth: 1,
-		borderRadius: 5,
-		padding: 10,
+	},
+	button: {
+		marginBottom: 20,
 	},
 });
