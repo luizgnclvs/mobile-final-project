@@ -10,7 +10,7 @@ import AboutScreen from './screens/AboutScreen';
 import AlbumDetailsScreen from './screens/AlbumDetailsScreen';
 import AlbumReviewScreen from './screens/AlbumReviewScreen';
 import AlbumCreateScreen from './screens/AlbumCreateScreen';
-import ReviewListScreen from './screens/ReviewListScreen';
+import ReviewListScreen from './screens/ReviewDetailsScreen';
 
 const Client = new QueryClient();
 const Tab = createBottomTabNavigator();
@@ -19,7 +19,7 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => {
 	return (
 		<Stack.Navigator>
-			<Stack.Screen name='HomeScreen' component={HomeScreen} />
+			<Stack.Screen name='Home' component={HomeScreen} />
 			<Stack.Screen name='AlbumDetailsScreen' component={AlbumDetailsScreen} />
 			<Stack.Screen name='AlbumReviewScreen' component={AlbumReviewScreen} />
 			<Stack.Screen name='ReviewListScreen' component={ReviewListScreen} />
@@ -32,8 +32,27 @@ export default function App() {
 		<QueryClientProvider client={Client}>
 			<PaperProvider>
 				<NavigationContainer>
-					<Tab.Navigator>
-					<Tab.Screen
+					<Tab.Navigator initialRouteName='HomeScreen'>
+						<Tab.Screen
+							name=' Home '
+							component={HomeStack}
+							options={{
+								tabBarIcon: ({ color, size }) => (
+									<FontAwesome name="home" color={color} size={size} />
+								),
+								headerShown: false,
+							}}
+						/>
+						<Tab.Screen
+							name='Reviews'
+							component={ReviewListScreen}
+							options={{
+								tabBarIcon: ({ color, size }) => (
+									<FontAwesome name="list" color={color} size={size} />
+								),
+							}}
+						/>
+						<Tab.Screen
 							name='Cadastrar Álbum'
 							component={AlbumCreateScreen}
 							options={{
@@ -42,17 +61,8 @@ export default function App() {
 								),
 							}}
 						/>
-						<Tab.Screen 
-							name='Home'
-							component={HomeStack}
-							options={{
-								tabBarIcon: ({ color, size }) => (
-									<FontAwesome name="home" color={color} size={size} />
-								),
-							}}
-						/>
-						<Tab.Screen 
-							name='Sobre' 
+						<Tab.Screen
+							name='Sobre'
 							component={AboutScreen} 
 							options={{
 								tabBarIcon: ({ color, size }) => (
