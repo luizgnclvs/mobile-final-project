@@ -1,6 +1,7 @@
-import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as ImagePicker from 'expo-image-picker';
 
 import CoverPreview from '../components/CoverPreview';
@@ -49,11 +50,17 @@ export default function AlbumCreateScreen({ route, navigation }) {
 			};
 
 			try {
-				const result = await createAlbum(body);
-				console.log(result)
+				await createAlbum(body);
 				Alert.alert('Sucesso', 'Novo álbum foi cadastrado com sucesso.');
-			} catch(error) {
 
+				setName('');
+				setArtist('');
+				setURL('');
+				setYear(0);
+				setImage(null);
+
+			} catch(error) {
+				console.log(error);
 			}
 		}
 	};
@@ -66,7 +73,7 @@ export default function AlbumCreateScreen({ route, navigation }) {
 	});
 
 	return (
-		<ScrollView contentContainerStyle={styles.container}>
+		<KeyboardAwareScrollView contentContainerStyle={styles.container} behavior="height">
 			<CoverPreview
 				placeholderImageSource={placeholderImage}
 				selectedImage={image}
@@ -111,7 +118,7 @@ export default function AlbumCreateScreen({ route, navigation }) {
 			>
 				Criar Álbum
 			</Button>
-		</ScrollView>
+		</KeyboardAwareScrollView>
 	);
 }
 
