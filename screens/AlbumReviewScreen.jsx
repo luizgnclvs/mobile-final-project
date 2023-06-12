@@ -39,7 +39,7 @@ export default function AlbumReviewScreen({ route, navigation }) {
 			score: score * 2,
 			commentary,
 			album_id: album.id,
-			date,
+			date: date,
 		}
 
 		try {
