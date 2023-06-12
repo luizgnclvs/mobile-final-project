@@ -35,8 +35,8 @@ export default function HomeScreen({ navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<Text variant='headlineSmall'>Albums</Text>
-			{isFetching && <Text>IS FETCHING</Text>}
+			<Text variant='headlineMedium' style={styles.title}>Albums</Text>
+			{isFetching && <Text style={styles.fetching}>IS FETCHING</Text>}
 			{data &&
 				<FlatList
 					data={data}
@@ -56,4 +56,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	title: {
+		marginBottom: 20,
+		marginTop: 10,
+	},
+	fetching: {
+		marginBottom: 10,
+	}
 });

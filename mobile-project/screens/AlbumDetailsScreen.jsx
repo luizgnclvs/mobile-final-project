@@ -27,6 +27,7 @@ export default function AlbumDetailsScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		padding: 10,
 		backgroundColor: '#fff',
 		alignItems: 'center',
@@ -50,5 +51,6 @@ const styles = StyleSheet.create({
 	},
 	description: {
 		textAlign: 'justify',
+		marginBottom: 30,
 	},
 });

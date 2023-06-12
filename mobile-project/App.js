@@ -25,13 +25,21 @@ const HomeStack = () => {
 	);
 }
 
-
 export default function App() {
 	return (
 		<QueryClientProvider client={Client}>
 			<PaperProvider>
 				<NavigationContainer>
 					<Tab.Navigator>
+					<Tab.Screen
+							name='Cadastrar Álbum'
+							component={AlbumCreateScreen}
+							options={{
+								tabBarIcon: ({ color, size }) => (
+									<FontAwesome name="plus" color={color} size={size} />
+								),
+							}}
+						/>
 						<Tab.Screen 
 							name='Home'
 							component={HomeStack}
@@ -42,20 +50,11 @@ export default function App() {
 							}}
 						/>
 						<Tab.Screen 
-							name='About' 
+							name='Sobre' 
 							component={AboutScreen} 
 							options={{
 								tabBarIcon: ({ color, size }) => (
 									<FontAwesome name="info-circle" color={color} size={size} />
-								),
-							}}
-						/>
-						<Tab.Screen
-							name='NewAlbum'
-							component={AlbumCreateScreen}
-							options={{
-								tabBarIcon: ({ color, size }) => (
-									<FontAwesome name="plus" color={color} size={size} />
 								),
 							}}
 						/>
