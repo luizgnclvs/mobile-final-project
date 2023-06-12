@@ -5,12 +5,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
 
-import HomeScreen from './screens/HomeScreen';
 import AboutScreen from './screens/AboutScreen';
 import AlbumDetailsScreen from './screens/AlbumDetailsScreen';
 import AlbumReviewScreen from './screens/AlbumReviewScreen';
 import AlbumCreateScreen from './screens/AlbumCreateScreen';
-import ReviewListScreen from './screens/ReviewDetailsScreen';
+import HomeScreen from './screens/HomeScreen';
+import ReviewDetailsScreen from './screens/ReviewDetailsScreen';
+import ReviewListScreen from './screens/ReviewListScreen';
 
 const Client = new QueryClient();
 const Tab = createBottomTabNavigator();
@@ -20,9 +21,29 @@ const HomeStack = () => {
 	return (
 		<Stack.Navigator>
 			<Stack.Screen name='Home' component={HomeScreen} />
-			<Stack.Screen name='AlbumDetailsScreen' component={AlbumDetailsScreen} />
-			<Stack.Screen name='AlbumReviewScreen' component={AlbumReviewScreen} />
-			<Stack.Screen name='ReviewListScreen' component={ReviewListScreen} />
+			<Stack.Screen name='Álbum' component={AlbumDetailsScreen} />
+			<Stack.Screen name='Nova Review' component={AlbumReviewScreen} />
+		</Stack.Navigator>
+	);
+};
+
+const ReviewsStack = () => {
+	return (
+		<Stack.Navigator>
+			<Stack.Screen
+				name='List'
+				component={ReviewListScreen}
+				options={{
+					headerShown: false,
+				}}
+			/>
+			<Stack.Screen
+				name='Detail'
+				component={ReviewDetailsScreen}
+				options={{
+					headerShown: false,
+				}}
+			/>
 		</Stack.Navigator>
 	);
 }
@@ -32,7 +53,7 @@ export default function App() {
 		<QueryClientProvider client={Client}>
 			<PaperProvider>
 				<NavigationContainer>
-					<Tab.Navigator initialRouteName='HomeScreen'>
+					<Tab.Navigator initialRouteName=' Home '>
 						<Tab.Screen
 							name=' Home '
 							component={HomeStack}
@@ -45,7 +66,7 @@ export default function App() {
 						/>
 						<Tab.Screen
 							name='Reviews'
-							component={ReviewListScreen}
+							component={ReviewsStack}
 							options={{
 								tabBarIcon: ({ color, size }) => (
 									<FontAwesome name="list" color={color} size={size} />
