@@ -1,82 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import StarRating from 'react-native-star-rating';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native-paper';
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getRatings } from "../services/rating.service";
+import RatingPreview from '../components/RatingPreview';
 
-export default function ReviewListScreen({ route }) {
-  const { album, rating, comment, coverUrl } = route.params;
-  const [reviews, setReviews] = useState([]);
+export default function ReviewListScreen({ navigation }) {
+	const queryClient = useQueryClient();
+	const { isLoading, error, data, isFetching } = useQuery({
+		queryKey: ["ratings"],
+		queryFn: getRatings,
+	});
 
-  useEffect(() => {
-    const newReview = {
-      albumName: album.name,
-      artistName: album.artist,
-      rating,
-      comment,
-    };
+	if (isLoading) {
+		return (
+			<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+				<Text>Loading</Text>
+				<ActivityIndicator size="large" />
+			</View>
+		);
+	}
 
-    setReviews([newReview]);
-  }, []);
+	if (error) {
+		return (
+			<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+				<Text>Error: {error.message}</Text>
+			</View>
+		);
+	}
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{album.name}</Text>
-      <Text style={styles.subtitle}>{album.artist}</Text>
-      <Image source={{ uri: coverUrl }} style={styles.albumCover} />
-
-      {reviews.map((review, index) => (
-        <View key={index} style={styles.reviewContainer}>
-          <StarRating
-                        disabled={true}
-                        maxStars={5}
-                        rating={review.rating}
-                        starSize={30}
-                        fullStarColor="gold"
-                        emptyStarColor="gold"
-        />
-        <Text style={styles.comment}>{review.comment}</Text>
-        </View>
-      ))}
-    </View>
-  );
+	return (
+		<View style={styles.container}>
+			<Text variant='headlineMedium' style={styles.title}>Avaliações</Text>
+			{isFetching && <Text style={styles.fetching}>IS FETCHING</Text>}
+			{data &&
+				<FlatList
+					data={data.filter(rating => !!rating.album_id)}
+					renderItem={({item}) => <RatingPreview rating={item} navigation={navigation} />}
+					keyExtractor={item => item.id}
+				/>
+			}
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-  },
-  albumCover: {
-    width: 200,
-    height: 200,
-    marginBottom: 20,
-    borderRadius: 5,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  reviewContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  rating: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  comment: {
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: 16,
-  },
+	container: {
+		padding: 10,
+		flex: 1,
+		backgroundColor: '#fff',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	title: {
+		marginBottom: 20,
+		marginTop: 10,
+	},
+	fetching: {
+		marginBottom: 10,
+	}
 });
-
-

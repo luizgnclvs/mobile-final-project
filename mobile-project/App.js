@@ -5,11 +5,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
 
-import HomeScreen from './screens/HomeScreen';
 import AboutScreen from './screens/AboutScreen';
 import AlbumDetailsScreen from './screens/AlbumDetailsScreen';
 import AlbumReviewScreen from './screens/AlbumReviewScreen';
 import AlbumCreateScreen from './screens/AlbumCreateScreen';
+import HomeScreen from './screens/HomeScreen';
+import ReviewDetailsScreen from './screens/ReviewDetailsScreen';
 import ReviewListScreen from './screens/ReviewListScreen';
 
 const Client = new QueryClient();
@@ -19,45 +20,74 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => {
 	return (
 		<Stack.Navigator>
-			<Stack.Screen name='HomeScreen' component={HomeScreen} />
-			<Stack.Screen name='AlbumDetailsScreen' component={AlbumDetailsScreen} />
-			<Stack.Screen name='AlbumReviewScreen' component={AlbumReviewScreen} />
-			<Stack.Screen name='ReviewListScreen' component={ReviewListScreen} />
+			<Stack.Screen name='Home' component={HomeScreen} />
+			<Stack.Screen name='Álbum' component={AlbumDetailsScreen} />
+			<Stack.Screen name='Nova Review' component={AlbumReviewScreen} />
+		</Stack.Navigator>
+	);
+};
+
+const ReviewsStack = () => {
+	return (
+		<Stack.Navigator>
+			<Stack.Screen
+				name='List'
+				component={ReviewListScreen}
+				options={{
+					headerShown: false,
+				}}
+			/>
+			<Stack.Screen
+				name='Detail'
+				component={ReviewDetailsScreen}
+				options={{
+					headerShown: false,
+				}}
+			/>
 		</Stack.Navigator>
 	);
 }
-
 
 export default function App() {
 	return (
 		<QueryClientProvider client={Client}>
 			<PaperProvider>
 				<NavigationContainer>
-					<Tab.Navigator>
-						<Tab.Screen 
-							name='Home'
+					<Tab.Navigator initialRouteName=' Home '>
+						<Tab.Screen
+							name=' Home '
 							component={HomeStack}
 							options={{
 								tabBarIcon: ({ color, size }) => (
 									<FontAwesome name="home" color={color} size={size} />
 								),
+								headerShown: false,
 							}}
 						/>
-						<Tab.Screen 
-							name='About' 
-							component={AboutScreen} 
+						<Tab.Screen
+							name='Reviews'
+							component={ReviewsStack}
 							options={{
 								tabBarIcon: ({ color, size }) => (
-									<FontAwesome name="info-circle" color={color} size={size} />
+									<FontAwesome name="list" color={color} size={size} />
 								),
 							}}
 						/>
 						<Tab.Screen
-							name='NewAlbum'
+							name='Cadastrar Álbum'
 							component={AlbumCreateScreen}
 							options={{
 								tabBarIcon: ({ color, size }) => (
 									<FontAwesome name="plus" color={color} size={size} />
+								),
+							}}
+						/>
+						<Tab.Screen
+							name='Sobre'
+							component={AboutScreen} 
+							options={{
+								tabBarIcon: ({ color, size }) => (
+									<FontAwesome name="info-circle" color={color} size={size} />
 								),
 							}}
 						/>
