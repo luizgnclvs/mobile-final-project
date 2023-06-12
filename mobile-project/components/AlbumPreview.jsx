@@ -1,14 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Image } from 'react-native';
-import { TouchableOpacity } from 'react-native';
-import { View } from 'react-native';
 
 export default function AlbumPreview(props) {
 	const { album, navigation } = props;
 
 	return (
-		<TouchableOpacity key={album.id} style={styles.album} onPress={() => navigation.navigate('AlbumDetailsScreen', { album })}>
+		<TouchableOpacity key={album.id} style={styles.album} onPress={() => navigation.navigate('Álbum', { album })}>
 			<Image source={{ uri: album.cover_url }} style={styles.albumCover} />
 			<View>
 				<Text variant='titleLarge'>{album.name}</Text>

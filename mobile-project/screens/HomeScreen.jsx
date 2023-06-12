@@ -1,10 +1,8 @@
 
-import { StyleSheet } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
-import { FlatList } from 'react-native';
-import { View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native-paper';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { getAlbums } from '../services/album.service';
 
 import AlbumPreview from '../components/AlbumPreview';
@@ -54,6 +52,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff',
 		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	title: {
 		marginBottom: 20,
