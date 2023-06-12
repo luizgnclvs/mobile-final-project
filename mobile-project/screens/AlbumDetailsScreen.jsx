@@ -20,7 +20,7 @@ export default function AlbumDetailsScreen({ route, navigation }) {
 			<Text style={styles.description}>
 				Esse album é perfeito!
 			</Text>
-			<Button title="Review" onPress={() => navigation.navigate('AlbumReviewScreen', { album: album })} />
+			<Button title="Fazer Review" onPress={() => navigation.navigate('AlbumReviewScreen', { album: album, coverUrl: album.cover_url, })} />
 		</View>
 	);
 }

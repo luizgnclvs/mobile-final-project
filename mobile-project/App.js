@@ -10,6 +10,7 @@ import AboutScreen from './screens/AboutScreen';
 import AlbumDetailsScreen from './screens/AlbumDetailsScreen';
 import AlbumReviewScreen from './screens/AlbumReviewScreen';
 import AlbumCreateScreen from './screens/AlbumCreateScreen';
+import ReviewListScreen from './screens/ReviewListScreen';
 
 const Client = new QueryClient();
 const Tab = createBottomTabNavigator();
@@ -21,6 +22,7 @@ const HomeStack = () => {
 			<Stack.Screen name='HomeScreen' component={HomeScreen} />
 			<Stack.Screen name='AlbumDetailsScreen' component={AlbumDetailsScreen} />
 			<Stack.Screen name='AlbumReviewScreen' component={AlbumReviewScreen} />
+			<Stack.Screen name='ReviewListScreen' component={ReviewListScreen} />
 		</Stack.Navigator>
 	);
 }

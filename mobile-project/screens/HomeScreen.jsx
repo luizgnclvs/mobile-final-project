@@ -35,15 +35,19 @@ export default function HomeScreen({ navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<Text variant='headlineSmall'>Albums</Text>
-			{isFetching && <Text>IS FETCHING</Text>}
-			{data &&
-				<FlatList
-					data={data}
-					renderItem={({item}) => <AlbumPreview album={item} navigation={navigation} />}
-					keyExtractor={item => item.id}
-				/>
-			}
+		  <View style={styles.titleContainer}>
+			<Text variant='headlineSmall' style={styles.title}>Albums</Text>
+		  </View>
+		  {isFetching && <Text>IS FETCHING</Text>}
+		  {data &&
+			<View style={styles.flatListContainer}>
+			  <FlatList
+				data={data}
+				renderItem={({item}) => <AlbumPreview album={item} navigation={navigation} />}
+				keyExtractor={item => item.id}
+			  />
+			</View>
+		  }
 		</View>
 	);
 }
@@ -53,7 +57,18 @@ const styles = StyleSheet.create({
 		padding: 10,
 		flex: 1,
 		backgroundColor: '#fff',
-		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	titleContainer: {
+		alignItems: 'center',
+		marginTop: 10,
+	  },
+	  title: {
+		fontSize: 24,
+		fontWeight: 'bold',
+	  },
+	  flatListContainer: {
+		flex: 1,
+		marginTop: 20,
+	  },
 });
