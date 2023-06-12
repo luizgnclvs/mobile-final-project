@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Alert, Button, Image, StyleSheet, Text, TextInput } from 'react-native';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { createRating } from '../services/rating.service';
-
 
 export default function AlbumReviewScreen({ route, navigation }) {
 	if (!route.params || !route.params.album) {
@@ -15,6 +15,7 @@ export default function AlbumReviewScreen({ route, navigation }) {
 	}
 
 	const { album, coverUrl } = route.params;
+	const queryClient = useQueryClient();
 
 	const [score, setScore] = useState(0)
 	const [commentary, setCommentary] = useState('');
@@ -53,6 +54,13 @@ export default function AlbumReviewScreen({ route, navigation }) {
 			console.log(error);
 		}
 	};
+
+	const mutation = useMutation({
+		mutationFn: handleSubmit,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['ratings'] });
+		},
+	});
 
 
 	return (
