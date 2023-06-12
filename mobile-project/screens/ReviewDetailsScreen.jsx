@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import StarRating from 'react-native-star-rating';
 
-export default function ReviewListScreen({ route }) {
+export default function ReviewDetailsScreen({ route }) {
   const { album, rating, comment, coverUrl } = route.params;
   const [reviews, setReviews] = useState([]);
 
