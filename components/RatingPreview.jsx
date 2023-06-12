@@ -11,7 +11,6 @@ export default function(props) {
 	const album = data.find(album => album.id === rating.album_id);
 
 	const date = new Date(rating.date);
-	console.log(date.getDate())
 
 	return (
 		<TouchableOpacity key={rating.id} style={styles.rating} onPress={() => navigation.navigate('Detail', { album, rating })}>
