@@ -41,7 +41,9 @@ export default function AlbumCreateScreen({ route, navigation }) {
 
 			if (cover) setURL(cover._url);
 			else Alert.alert('Erro', 'Falha ao salvar a capa do álbum.');
-		} else {
+		}
+
+		if (url) {
 			const body = {
 				name: name,
 				artist: artist,
@@ -73,7 +75,7 @@ export default function AlbumCreateScreen({ route, navigation }) {
 	});
 
 	return (
-		<KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }} behavior="padding" keyboardShouldPersistTaps="handled">
+		<KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }} behavior="margin" keyboardShouldPersistTaps="handled">
 			<View style={styles.container}>
 				<CoverPreview
 					placeholderImageSource={placeholderImage}
