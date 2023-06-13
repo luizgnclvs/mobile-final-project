@@ -30,7 +30,6 @@ export default function ReviewListScreen({ navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<Text variant='headlineMedium' style={styles.title}>Avaliações</Text>
 			{isFetching && <Text style={styles.fetching}>IS FETCHING</Text>}
 			{data &&
 				<FlatList
@@ -49,7 +48,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff',
 		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 	},
 	title: {
 		marginBottom: 20,

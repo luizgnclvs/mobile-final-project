@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Alert, Button, Image, StyleSheet, Text, TextInput } from 'react-native';
+import { Alert, Image, StyleSheet, Text } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import StarRating from 'react-native-star-rating';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -75,15 +76,24 @@ export default function AlbumReviewScreen({ route, navigation }) {
 				rating={score}
 				selectedStar={handleScoreChange}
 				starSize={30}
+				fullStarColor="gold"
+				emptyStarColor="gold"
 			/>
 			<TextInput
 				style={styles.input}
-				placeholder="Comentário"
 				onChangeText={setCommentary}
 				value={commentary}
+				label="Comentário"
+				mode="outlined"
 			/>
 			 
-			<Button title="Enviar" onPress={handleSubmit} />
+			<Button  
+				onPress={handleSubmit}
+				mode='contained'
+				style={styles.button}
+			> 
+				Enviar
+			</Button>
 		</KeyboardAwareScrollView>
 	);
 }
@@ -112,11 +122,8 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 	},
 	input: {
-		borderWidth: 1,
-		borderRadius: 5,
-		padding: 50,
-		marginTop: 30,
-		marginBottom: 50,
-		width: '100%',
+		width: '90%',
+		marginTop:40,
+		marginBottom:10,
 	},
 });

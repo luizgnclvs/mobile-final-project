@@ -23,6 +23,8 @@ export default function(props) {
 					maxStars={5}
 					rating={rating.score / 2}
 					starSize={25}
+					fullStarColor="gold"
+					emptyStarColor="gold"
 				/>
 				<Text variant='titleMedium'>{date.getDate() + 1}/{date.getMonth() + 1}/{date.getFullYear()}</Text>
 			</View>
@@ -34,11 +36,11 @@ const styles = StyleSheet.create({
 	rating: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: 10,
+		marginBottom: 20,
 	},
 	albumCover: {
-		width: 50,
-		height: 50,
+		width: 100,
+		height: 100,
 		marginRight: 10,
 		borderRadius: 5,
 	},

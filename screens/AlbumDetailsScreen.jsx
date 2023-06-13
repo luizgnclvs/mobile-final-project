@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Image } from 'react-native';
 import { Text } from 'react-native-paper';
 import { View } from 'react-native';
-import { Button } from 'react-native';
+import { Button } from 'react-native-paper';
 
 export default function AlbumDetailsScreen({ route, navigation }) {
 	if (!route.params || !route.params.album) {
@@ -20,7 +20,13 @@ export default function AlbumDetailsScreen({ route, navigation }) {
 			<Text style={styles.description}>
 				Esse album é perfeito!
 			</Text>
-			<Button title="Fazer Review" onPress={() => navigation.navigate('Nova Review', { album: album, coverUrl: album.cover_url, })} />
+			<Button 
+				onPress={() => navigation.navigate('Nova Review', { album: album, coverUrl: album.cover_url, })}
+				mode='contained'
+				style={styles.button}
+			> 
+				Fazer Review
+			</Button>
 		</View>
 	);
 }
@@ -32,6 +38,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	button: {
+		marginBottom: 20,
 	},
 	albumCover: {
 		width: 200,
