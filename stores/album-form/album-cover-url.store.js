@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const albumCoverURLStore = create(persist((set) => ({
-	url: '',
+	url: null,
 	setURL: (url) => set({ url }),
 }), {
 	name: "album-cover-url-store",

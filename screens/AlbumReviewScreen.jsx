@@ -34,7 +34,7 @@ export default function AlbumReviewScreen({ route, navigation }) {
 		return `${date.getFullYear()}-${month}-${day}`;
 	}
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		const date = formatDate();
 
 		const body = {
@@ -45,7 +45,7 @@ export default function AlbumReviewScreen({ route, navigation }) {
 		}
 
 		try {
-			createRating(body);
+			await createRating(body);
 			Alert.alert('Sucesso', 'Review feita com sucesso!')
 
 			setScore(0);
