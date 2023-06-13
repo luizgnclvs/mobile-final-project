@@ -1,4 +1,4 @@
-import { Alert, StyleSheet } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -21,6 +21,10 @@ export default function AlbumCreateScreen({ route, navigation }) {
 	const { year, setYear} = albumReleaseYearStore();
 	const { image, setImage } = useAlbumCoverStore();
 
+	const isButtonDisabled = () => {
+		return !name || !artist || !url || !year;
+	}
+
 	const handleYearInput = (value) => { if (!isNaN(value)) setYear(value) };
 
 	const selectAlbumCover = async () => {
@@ -31,37 +35,44 @@ export default function AlbumCreateScreen({ route, navigation }) {
 			base64: true,
 		});
 
-		if (!result.canceled) setImage(result.assets[0]);
-		else if (!image) Alert.alert('Importante','É necessário selecionar uma imagem de capa para o álbum.');
+		if (!result.canceled) {
+			setImage(result.assets[0]);
+
+			const cover = await saveAlbumCover(image ?? result.assets[0]);
+
+			if (!!cover) {
+				setURL(cover._url);
+
+				Alert.alert('Sucesso', 'Capa salva com sucesso!');
+			} else {
+				Alert.alert('Erro', 'Falha ao salvar a capa do álbum.');
+				return null;
+			}
+		}
+		else if (!image) Alert.alert('Aviso','É necessário selecionar uma imagem de capa para o álbum.');
 	};
 
 	const submitNewALbum = async () => {
-		if (!url) {
-			const cover = await saveAlbumCover(image);
+		const body = {
+			name: name,
+			artist: artist,
+			cover_url: url,
+			release_year: year,
+		};
 
-			if (cover) setURL(cover._url);
-			else Alert.alert('Erro', 'Falha ao salvar a capa do álbum.');
-		} else {
-			const body = {
-				name: name,
-				artist: artist,
-				cover_url: url,
-				release_year: year,
-			};
-
-			try {
-				await createAlbum(body);
-				Alert.alert('Sucesso', 'Novo álbum foi cadastrado com sucesso.');
-
+		try {
+			let result = await createAlbum(body);
+			if (result) {
 				setName('');
 				setArtist('');
-				setURL('');
-				setYear(0);
+				setURL(null);
+				setYear(new Date().getFullYear());
 				setImage(null);
 
-			} catch(error) {
-				console.log(error);
+				Alert.alert('Sucesso', 'Novo álbum foi cadastrado com sucesso.');
 			}
+		} catch(error) {
+			console.log(error);
 		}
 	};
 
@@ -73,51 +84,54 @@ export default function AlbumCreateScreen({ route, navigation }) {
 	});
 
 	return (
-		<KeyboardAwareScrollView contentContainerStyle={styles.container} behavior="height">
-			<CoverPreview
-				placeholderImageSource={placeholderImage}
-				selectedImage={image}
-			/>
-			<Button
-				mode='contained'
-				icon='camera'
-				onPress={selectAlbumCover}
-				style={styles.button}
-			>
-				Selecionar Foto
-			</Button>
-			<TextInput
-				label="Nome do Álbum"
-				mode="outlined"
-				value={name}
-				onChangeText={setName}
-				style={styles.input}
-				placeholder="Nome do Álbum"
-			/>
-			<TextInput
-				label="Artista"
-				mode="outlined"
-				value={artist}
-				onChangeText={setArtist}
-				style={styles.input}
-				placeholder="Artista"
-			/>
-			<TextInput
-				label="Ano de Lançamento"
-				mode="outlined"
-				value={String(year)}
-				onChangeText={handleYearInput}
-				style={styles.input}
-				placeholder="Ano de Lançamento"
-				maxLength={4}
-			/>
-			<Button
-				mode='contained'
-				icon='plus'
-				onPress={mutation.mutate}
-			>
-				Criar Álbum
-			</Button>
+		<KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }} behavior="margin" keyboardShouldPersistTaps="handled">
+			<View style={styles.container}>
+				<CoverPreview
+					placeholderImageSource={placeholderImage}
+					selectedImage={image}
+				/>
+				<Button
+					mode='contained'
+					icon='camera'
+					onPress={selectAlbumCover}
+					style={styles.button}
+				>
+					Selecionar Foto
+				</Button>
+				<TextInput
+					label="Nome do Álbum"
+					mode="outlined"
+					value={name}
+					onChangeText={setName}
+					style={styles.input}
+					placeholder="Nome do Álbum"
+				/>
+				<TextInput
+					label="Artista"
+					mode="outlined"
+					value={artist}
+					onChangeText={setArtist}
+					style={styles.input}
+					placeholder="Artista"
+				/>
+				<TextInput
+					label="Ano de Lançamento"
+					mode="outlined"
+					value={String(year)}
+					onChangeText={handleYearInput}
+					style={styles.input}
+					placeholder="Ano de Lançamento"
+					maxLength={4}
+				/>
+				<Button
+					mode='contained'
+					icon='plus'
+					onPress={mutation.mutate}
+					disabled={isButtonDisabled()}
+				>
+					Criar Álbum
+				</Button>
+			</View>
 		</KeyboardAwareScrollView>
 	);
 }

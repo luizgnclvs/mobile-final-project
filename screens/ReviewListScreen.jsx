@@ -30,13 +30,13 @@ export default function ReviewListScreen({ navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<Text variant='headlineMedium' style={styles.title}>Avaliações</Text>
 			{isFetching && <Text style={styles.fetching}>IS FETCHING</Text>}
 			{data &&
 				<FlatList
 					data={data.filter(rating => !!rating.album_id)}
 					renderItem={({item}) => <RatingPreview rating={item} navigation={navigation} />}
 					keyExtractor={item => item.id}
+					style={styles.flatlist}
 				/>
 			}
 		</View>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff',
 		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 	},
 	title: {
 		marginBottom: 20,
@@ -57,5 +57,9 @@ const styles = StyleSheet.create({
 	},
 	fetching: {
 		marginBottom: 10,
-	}
+	},
+	flatlist: {
+		width: '100%',
+		paddingHorizontal: 20,
+	},
 });

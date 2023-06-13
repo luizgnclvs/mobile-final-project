@@ -7,10 +7,10 @@ Parse.serverURL = 'https://parseapi.back4app.com/';
 Parse.initialize('emImppLbrG6yG2NH334Cx898GVcFTY4R6jW3x3Lj', 'bgm8CbuQBxciTIB25jFfEm0k0deia3KHMvktLE1c');
 
 export const saveAlbumCover = async image => {
-	const { base64 } = image;
-	const parseFile = new Parse.File('cover.jpg', { base64 });
-
 	try {
+		const { base64 } = image;
+		const parseFile = new Parse.File('cover.jpg', { base64 });
+
 		return await parseFile.save();
 		// const responseFile = await parseFile.save();
 		// const Cover = Parse.Object.extend('Cover');

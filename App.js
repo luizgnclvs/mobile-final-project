@@ -20,9 +20,15 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => {
 	return (
 		<Stack.Navigator>
-			<Stack.Screen name='Home' component={HomeScreen} />
-			<Stack.Screen name='Álbum' component={AlbumDetailsScreen} />
-			<Stack.Screen name='Nova Review' component={AlbumReviewScreen} />
+			<Stack.Screen name='Home' component={HomeScreen} options={{
+					headerTitleStyle: { color: '#663399' },
+				}}/>
+			<Stack.Screen name='Álbum' component={AlbumDetailsScreen} options={{
+					headerTitleStyle: { color: '#663399' },
+				}} />
+			<Stack.Screen name='Nova Review' component={AlbumReviewScreen} options={{
+					headerTitleStyle: { color: '#663399' },
+				}}/>
 		</Stack.Navigator>
 	);
 };
@@ -35,6 +41,7 @@ const ReviewsStack = () => {
 				component={ReviewListScreen}
 				options={{
 					headerShown: false,
+					headerTitleStyle: { color: '#663399' }
 				}}
 			/>
 			<Stack.Screen
@@ -42,6 +49,7 @@ const ReviewsStack = () => {
 				component={ReviewDetailsScreen}
 				options={{
 					headerShown: false,
+					headerTitleStyle: { color: '#663399' }
 				}}
 			/>
 		</Stack.Navigator>
@@ -53,7 +61,9 @@ export default function App() {
 		<QueryClientProvider client={Client}>
 			<PaperProvider>
 				<NavigationContainer>
-					<Tab.Navigator initialRouteName=' Home '>
+					<Tab.Navigator initialRouteName=' Home '  screenOptions={{
+              tabBarActiveTintColor: '#663399', 
+            }}>
 						<Tab.Screen
 							name=' Home '
 							component={HomeStack}
@@ -68,6 +78,7 @@ export default function App() {
 							name='Reviews'
 							component={ReviewsStack}
 							options={{
+								headerTitleStyle: { color: '#663399' },
 								tabBarIcon: ({ color, size }) => (
 									<FontAwesome name="list" color={color} size={size} />
 								),
@@ -77,6 +88,7 @@ export default function App() {
 							name='Cadastrar Álbum'
 							component={AlbumCreateScreen}
 							options={{
+								headerTitleStyle: { color: '#663399' },
 								tabBarIcon: ({ color, size }) => (
 									<FontAwesome name="plus" color={color} size={size} />
 								),
@@ -86,6 +98,7 @@ export default function App() {
 							name='Sobre'
 							component={AboutScreen} 
 							options={{
+								headerTitleStyle: { color: '#663399' },
 								tabBarIcon: ({ color, size }) => (
 									<FontAwesome name="info-circle" color={color} size={size} />
 								),
