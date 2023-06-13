@@ -36,6 +36,7 @@ export default function ReviewListScreen({ navigation }) {
 					data={data.filter(rating => !!rating.album_id)}
 					renderItem={({item}) => <RatingPreview rating={item} navigation={navigation} />}
 					keyExtractor={item => item.id}
+					style={styles.flatlist}
 				/>
 			}
 		</View>
@@ -56,5 +57,9 @@ const styles = StyleSheet.create({
 	},
 	fetching: {
 		marginBottom: 10,
-	}
+	},
+	flatlist: {
+		width: '100%',
+		paddingHorizontal: 20,
+	},
 });

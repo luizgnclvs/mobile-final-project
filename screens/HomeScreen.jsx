@@ -39,6 +39,7 @@ export default function HomeScreen({ navigation }) {
 					data={data}
 					renderItem={({item}) => <AlbumPreview album={item} navigation={navigation} />}
 					keyExtractor={item => item.id}
+					style={styles.flatlist}
 				/>
 			}
 		</View>
@@ -54,5 +55,9 @@ const styles = StyleSheet.create({
 	},
 	fetching: {
 		marginBottom: 10,
-	}
+	},
+	flatlist: {
+		width: '100%',
+		paddingHorizontal: 20,
+	},
 });
