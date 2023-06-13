@@ -36,34 +36,33 @@ export default function AlbumCreateScreen({ route, navigation }) {
 	};
 
 	const submitNewALbum = async () => {
-		if (!url) {
-			const cover = await saveAlbumCover(image);
+		const cover = await saveAlbumCover(image);
 
-			if (cover) setURL(cover._url);
-			else Alert.alert('Erro', 'Falha ao salvar a capa do álbum.');
+		if (!!cover) setURL(cover._url);
+		else {
+			Alert.alert('Erro', 'Falha ao salvar a capa do álbum.');
+			return null;
 		}
 
-		if (url) {
-			const body = {
-				name: name,
-				artist: artist,
-				cover_url: url,
-				release_year: year,
-			};
+		const body = {
+			name: name,
+			artist: artist,
+			cover_url: url,
+			release_year: year,
+		};
 
-			try {
-				await createAlbum(body);
-				Alert.alert('Sucesso', 'Novo álbum foi cadastrado com sucesso.');
+		try {
+			await createAlbum(body);
+			Alert.alert('Sucesso', 'Novo álbum foi cadastrado com sucesso.');
 
-				setName('');
-				setArtist('');
-				setURL('');
-				setYear(new Date().getFullYear());
-				setImage(null);
+			setName('');
+			setArtist('');
+			setURL(null);
+			setYear(new Date().getFullYear());
+			setImage(null);
 
-			} catch(error) {
-				console.log(error);
-			}
+		} catch(error) {
+			console.log(error);
 		}
 	};
 
