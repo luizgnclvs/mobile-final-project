@@ -1,4 +1,4 @@
-import { Alert, StyleSheet } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -56,7 +56,7 @@ export default function AlbumCreateScreen({ route, navigation }) {
 				setName('');
 				setArtist('');
 				setURL('');
-				setYear(0);
+				setYear(new Date().getFullYear());
 				setImage(null);
 
 			} catch(error) {
@@ -73,51 +73,53 @@ export default function AlbumCreateScreen({ route, navigation }) {
 	});
 
 	return (
-		<KeyboardAwareScrollView contentContainerStyle={styles.container} behavior="height">
-			<CoverPreview
-				placeholderImageSource={placeholderImage}
-				selectedImage={image}
-			/>
-			<Button
-				mode='contained'
-				icon='camera'
-				onPress={selectAlbumCover}
-				style={styles.button}
-			>
-				Selecionar Foto
-			</Button>
-			<TextInput
-				label="Nome do Álbum"
-				mode="outlined"
-				value={name}
-				onChangeText={setName}
-				style={styles.input}
-				placeholder="Nome do Álbum"
-			/>
-			<TextInput
-				label="Artista"
-				mode="outlined"
-				value={artist}
-				onChangeText={setArtist}
-				style={styles.input}
-				placeholder="Artista"
-			/>
-			<TextInput
-				label="Ano de Lançamento"
-				mode="outlined"
-				value={String(year)}
-				onChangeText={handleYearInput}
-				style={styles.input}
-				placeholder="Ano de Lançamento"
-				maxLength={4}
-			/>
-			<Button
-				mode='contained'
-				icon='plus'
-				onPress={mutation.mutate}
-			>
-				Criar Álbum
-			</Button>
+		<KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }} behavior="padding" keyboardShouldPersistTaps="handled">
+			<View style={styles.container}>
+				<CoverPreview
+					placeholderImageSource={placeholderImage}
+					selectedImage={image}
+				/>
+				<Button
+					mode='contained'
+					icon='camera'
+					onPress={selectAlbumCover}
+					style={styles.button}
+				>
+					Selecionar Foto
+				</Button>
+				<TextInput
+					label="Nome do Álbum"
+					mode="outlined"
+					value={name}
+					onChangeText={setName}
+					style={styles.input}
+					placeholder="Nome do Álbum"
+				/>
+				<TextInput
+					label="Artista"
+					mode="outlined"
+					value={artist}
+					onChangeText={setArtist}
+					style={styles.input}
+					placeholder="Artista"
+				/>
+				<TextInput
+					label="Ano de Lançamento"
+					mode="outlined"
+					value={String(year)}
+					onChangeText={handleYearInput}
+					style={styles.input}
+					placeholder="Ano de Lançamento"
+					maxLength={4}
+				/>
+				<Button
+					mode='contained'
+					icon='plus'
+					onPress={mutation.mutate}
+				>
+					Criar Álbum
+				</Button>
+			</View>
 		</KeyboardAwareScrollView>
 	);
 }
