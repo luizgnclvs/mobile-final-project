@@ -87,8 +87,8 @@ export default function AlbumReviewScreen({ route, navigation }) {
 				mode="outlined"
 			/>
 			 
-			<Button  
-				onPress={handleSubmit}
+			<Button
+				onPress={mutation.mutate}
 				mode='contained'
 				style={styles.button}
 			> 
