@@ -21,6 +21,10 @@ export default function AlbumCreateScreen({ route, navigation }) {
 	const { year, setYear} = albumReleaseYearStore();
 	const { image, setImage } = useAlbumCoverStore();
 
+	const isButtonDisabled = () => {
+		return !name || !artist || !url || !year;
+	}
+
 	const handleYearInput = (value) => { if (!isNaN(value)) setYear(value) };
 
 	const selectAlbumCover = async () => {
@@ -31,19 +35,24 @@ export default function AlbumCreateScreen({ route, navigation }) {
 			base64: true,
 		});
 
-		if (!result.canceled) setImage(result.assets[0]);
-		else if (!image) Alert.alert('Importante','É necessário selecionar uma imagem de capa para o álbum.');
+		if (!result.canceled) {
+			setImage(result.assets[0]);
+
+			const cover = await saveAlbumCover(image ?? result.assets[0]);
+
+			if (!!cover) {
+				setURL(cover._url);
+
+				Alert.alert('Sucesso', 'Capa salva com sucesso!');
+			} else {
+				Alert.alert('Erro', 'Falha ao salvar a capa do álbum.');
+				return null;
+			}
+		}
+		else if (!image) Alert.alert('Aviso','É necessário selecionar uma imagem de capa para o álbum.');
 	};
 
 	const submitNewALbum = async () => {
-		const cover = await saveAlbumCover(image);
-
-		if (!!cover) setURL(cover._url);
-		else {
-			Alert.alert('Erro', 'Falha ao salvar a capa do álbum.');
-			return null;
-		}
-
 		const body = {
 			name: name,
 			artist: artist,
@@ -52,15 +61,16 @@ export default function AlbumCreateScreen({ route, navigation }) {
 		};
 
 		try {
-			await createAlbum(body);
-			Alert.alert('Sucesso', 'Novo álbum foi cadastrado com sucesso.');
+			let result = await createAlbum(body);
+			if (result) {
+				setName('');
+				setArtist('');
+				setURL(null);
+				setYear(new Date().getFullYear());
+				setImage(null);
 
-			setName('');
-			setArtist('');
-			setURL(null);
-			setYear(new Date().getFullYear());
-			setImage(null);
-
+				Alert.alert('Sucesso', 'Novo álbum foi cadastrado com sucesso.');
+			}
 		} catch(error) {
 			console.log(error);
 		}
@@ -117,6 +127,7 @@ export default function AlbumCreateScreen({ route, navigation }) {
 					mode='contained'
 					icon='plus'
 					onPress={mutation.mutate}
+					disabled={isButtonDisabled()}
 				>
 					Criar Álbum
 				</Button>
